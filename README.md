@@ -270,6 +270,5 @@ colData <- data.frame(row.names = colnames(countData),
 dds <- DESeqDataSetFromMatrix(countData = countData, 
                               colData = colData, 
                               design = ~ condition)
-
 dds <- DESeq(dds) 
 ```
