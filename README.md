@@ -257,7 +257,7 @@ pheatmap(counts_top, annotation_col = colData)
 ![Heatmap](figures/pheatmap_tricho_general.png)
 
 ## Grouping Samples and Comparing Differential Expression
-#### At this stage, we compare plants inoculated with Trichoderma versus control plants at one and two days post-inoculation. In the PCA plot, we observed that samples C6 and C8 showed irregular expression patterns compared to the other control samples, so they were excluded from this analysis.
+At this stage, we compare plants inoculated with Trichoderma versus control plants at one and two days post-inoculation. In the PCA plot, we observed that samples C6 and C8 showed irregular expression patterns compared to the other control samples, so they were excluded from this analysis.
 ```r
 countData <- countData[, c("C4","C5","C7","C9",
                            "T4","T5","T6","T7","T8","T9")]
