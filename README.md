@@ -271,4 +271,44 @@ dds <- DESeqDataSetFromMatrix(countData = countData,
                               colData = colData, 
                               design = ~ condition)
 dds <- DESeq(dds) 
+
+# Get results for Control vs Trichoderma
+res <- results(dds, contrast = c("condition", "Control", "Trichoderma"))
+res <- res[order(res$padj), ]
 ```
+
+### PCA plot 
+```r
+rld <- rlog(dds, blind = TRUE)
+plotPCA(rld, intgroup = "condition", pcsToUse = 1:2, ntop = 70000) +
+  geom_text(aes(label = name), vjust = 1) +
+  theme_minimal()
+```
+![PCAplot](figures/PCAplot_TvsC_day1-day2.png)
+
+### Volcano plot
+```r
+EnhancedVolcano(res,
+                lab = rownames(res),
+                x = "log2FoldChange",
+                y = "pvalue",
+                xlim = c(-15, 15))
+```
+![Volcano_plot](figures/VolcanoPlot_TvsC_day1-day2.png)
+
+### MA plot 
+```r
+plotMA(res,
+       alpha = 0.1,
+       main = "Trichoderma vs Control on Days 1 and 2",
+       ylim = c(-10, 10))
+```
+![plotMA_TvsC_day1-day2.png](figures/plotMA_TvsC_day1-day2.png)
+
+### Heatmap of the 20 most differentially expressed genes. 
+```r
+top_genes <- rownames(res)[1:20]
+counts_top <- log2(counts(dds, normalized = TRUE)[top_genes,] + 1)
+pheatmap(counts_top, annotation_col = colData)
+```
+![pheatmap](figures/pheatmap_TvsC_day1-day2.png)
