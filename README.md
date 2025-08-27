@@ -243,7 +243,7 @@ EnhancedVolcano(res,
 ```r
 plotMA(res,
        alpha = 0.1,
-       main = "Expression Differences: Trichoderma vs Control",
+       main = "Trichoderma vs Control",
        ylim = c(-10, 10))
 ```
 ![plotMA_tricho_general.png](figures/plotMA_tricho_general.png)
@@ -255,3 +255,21 @@ counts_top <- log2(counts(dds, normalized = TRUE)[top_genes,] + 1)
 pheatmap(counts_top, annotation_col = colData)
 ```
 ![Heatmap](figures/pheatmap_tricho_general.png)
+
+## Grouping Samples and Comparing Differential Expression
+#### At this stage, we compare plants inoculated with Trichoderma versus control plants at one and two days post-inoculation. In the PCA plot, we observed that samples C6 and C8 showed irregular expression patterns compared to the other control samples, so they were excluded from this analysis.
+```r
+countData <- countData[, c("C4","C5","C7","C9",
+                           "T4","T5","T6","T7","T8","T9")]
+condition <- factor(c(rep("Control", 4), rep("Trichoderma", 6)))
+colData <- data.frame(row.names = colnames(countData),
+                      condition = condition)
+```
+### Build and run DESeq analysis. 
+```r
+dds <- DESeqDataSetFromMatrix(countData = countData, 
+                              colData = colData, 
+                              design = ~ condition)
+
+dds <- DESeq(dds) 
+```
