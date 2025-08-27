@@ -229,3 +229,29 @@ plotPCA(rld, intgroup = "condition", pcsToUse = 1:2, ntop = 70000) +
 ```
 ![PCA Plot](figures/PCAplot_tricho.png)
 
+### Volcano Plot of Differentially Expressed Genes
+```r
+EnhancedVolcano(res,
+                lab = rownames(res),
+                x = "log2FoldChange",
+                y = "pvalue",
+                xlim = c(-15, 15))
+```
+![VolcanoPlot_tricho_general.png](figures/VolcanoPlot_tricho_general.png)
+
+### MA Plot of Differential Expression
+```r
+plotMA(res,
+       alpha = 0.1,
+       main = "Expression Differences: Trichoderma vs Control",
+       ylim = c(-10, 10))
+```
+![plotMA_tricho_general.png](figures/plotMA_tricho_general.png)
+
+### Most Differentially Expressed Genes Heatmap
+```r
+top_genes <- row.names(res)[1:20]
+counts_top <- log2(counts(dds, normalized = TRUE)[top_genes,] + 1)
+pheatmap(counts_top, annotation_col = colData)
+```
+![Heatmap](figures/pheatmap_tricho_general.png)
